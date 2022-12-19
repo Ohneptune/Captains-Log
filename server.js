@@ -1,53 +1,32 @@
-// Import Dependancies
-require('dotenv').config();
 const express = require('express');
 const app = express();
+const bodyPaser =require('body-parser');
 const mongoose = require('mongoose');
-const port = 5500;
-const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const dotenv = require('dotenv');
+const logsRouter = require('./routes/captainLogs')
+dotenv.config()
+const PORT = process.env.PORT;
 
-app.set('view engine', 'jsx')
-app.engine('jsx', require('express-react-views').createEngine())
 
-//Middleware
 
-//Connect to Mongoose and Remove Deprication Warnings
-mongoose.set('strictQuery', true)
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology:true
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+app.set('views', __dirname + '/views' );
+app.set('layout', 'DefaultLayout')
+
+app.use(methodOverride('_method'))
+app.use(bodyPaser.urlencoded({ extended: false}))
+
+
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true})
+const db = mongoose.connection;
+db.on('error', error => console.log(error));
+db.once('open', () => console.log('Connected to Mongoose'))
+
+app.use('/logs', logsRouter)
+
+
+app.listen(PORT, ()=>{
+    console.log('Server running on '+ PORT)
 })
-
-mongoose.connection.once('open', () => {
-    console.log("connected to mongo")
-
-})
-
-// INDUCES YOOOOOO
-
-// Index Route
-
-// New Route
-app.get('/logs/new', (req,res) => {
-    res.render('new')
-    res.redirect('/logs')
-})
-
-// Delete Route
-// Update Route
-// Create Route
-app.post('/logs', (req, res) => {
-    localStorage.create(req.body, (error, createdLogs) => {
-        res.send(req.body)
-    })
-    })
-
-// Edit Route
-// Show Route
-
-//Port
-app.listen(port, () => {
-    console.log(`listening on port ${port}`)
-})
-

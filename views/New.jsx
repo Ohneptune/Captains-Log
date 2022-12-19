@@ -1,20 +1,16 @@
-const React = require('react')
+import React from 'react'
 
-class New extends React.Component {
-    render(){
-        return (
-            <html>
-                <div>
-                    <form action = "/logs" method="POST">
-                        Title: <input type="title" name="name"/> <br />
-                        Entry: <input type="textarea" /><br />
-                        Is The Ship Broken?: <input type="checkbox" /><br />
-                        <input type='submit' name='submit' value="Submit" />
-                    </form>
-                </div>
-            </html>
-        )
-    }
+const New = () => {
+  return (
+    <>
+        <form action="/logs" method="POST">
+            title:<input type="text" name="title"  placeholder='enter title'/>
+            entry:<input type="text" name="entry" placeholder='enter entry'/>
+            shipISBroken:<input type="checkbox" name="shipIsBroken" />
+            <input type="submit"/>
+        </form>
+    </>
+  )
 }
 
-module.exports = New;
+export default New

@@ -1,16 +1,17 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const logsSchema = new mongoose.Schema({
-    title: {
-        type: String
+const logsSchema = ({
+    title:{
+        type: String,
     },
-    entry: {
-        type: String
+    entry:{
+        type: String,
     },
-    shipIsBroken: {
+    shipIsBroken:{
         type: Boolean,
-        default: true
     }
-},
-{timestamps: true}
-)
+})
+
+const Logs = mongoose.model('Logs', logsSchema)
+
+module.exports = Logs
